@@ -1,0 +1,17 @@
+@(users: List[models.User])
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Email</th>
+    </tr>
+@for((user) <-  users) {
+    <tr>
+        <td>
+            @user.name
+        </td>
+        <td>
+            @user.email
+        </td>
+    </tr>
+}
+</table>
