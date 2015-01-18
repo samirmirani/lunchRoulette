@@ -1,27 +1,19 @@
 $( document ).ready(function() {
     var lr = new LunchRoullette();
     lr.handleForm();
-    lr.getRouletteUsers();
+    lr.topNav();
 
 });
 
 function LunchRoullette() {
-    var getUsers = function() {
-        var response = function(response) {
-            $('#currentUserOnRoulette').html(response);
-        };
-
-        $.ajax({
-            url: "/lunch-goers",
-            success: response
-        });
-    };
-
-    this.getRouletteUsers = function() {
-        getUsers();
-    };
+    this.topNav = function() {
+        var $nav = $('#nav');
+        $nav.find("li").removeClass("current");
+    }
 
     this.handleForm = function() {
+    return;
+    //this is not needed anymore
         $("#addUser").submit(function(e) {
             e.preventDefault();
 

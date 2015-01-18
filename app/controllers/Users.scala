@@ -14,11 +14,20 @@ object UsersController extends Controller {
 
   def index = Action {
     val users = User.list
-    val shuffledUsers = RouletteService.doPairing(users)
-    Ok(views.html.lunchGoers(  shuffledUsers  ))
+    Ok(views.html.lunchGoers(  users  ))
   }
 
-  def addUser = Action { implicit request =>
+  def seePair = Action {
+      val users = User.list
+      val shuffledUsers = RouletteService.doPairing(users)
+      Ok(views.html.seePairs(  shuffledUsers  ))
+  }
+
+  def addUser = Action {
+    Ok(views.html.addUser())
+  }
+
+  def addUserPost = Action { implicit request =>
 
     //todo csrf check
 
@@ -31,11 +40,11 @@ object UsersController extends Controller {
 
     form.bindFromRequest.fold(
       formWithErrors => {
-        Ok(views.html.addUser("false"))
+        Redirect("/add")
       },
       user => {
         User.save(user)
-        Ok(views.html.addUser("true"))
+        Redirect("/lunch-goers")
       })
   }
 

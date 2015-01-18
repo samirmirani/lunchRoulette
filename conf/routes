@@ -5,7 +5,9 @@
 # Home page
 GET     /                           controllers.Application.index
 GET     /lunch-goers                controllers.UsersController.index
-POST    /addUser                    controllers.UsersController.addUser
+GET     /seePairs                   controllers.UsersController.seePair
+GET     /add                        controllers.UsersController.addUser
+POST    /addUser                    controllers.UsersController.addUserPost
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)

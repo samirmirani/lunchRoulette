@@ -1,25 +1,23 @@
-@(usersPair:List[(models.User, models.User)])
-<table>
-    <tr>
-        <th>Name</th>
-        <th>Email</th>
-        <th>Name</th>
-        <th>Email</th>
-    </tr>
-@for((users) <-  usersPair) {
-    <tr>
-        <td>
-            @users._1.name
-        </td>
-        <td>
-            @users._1.email
-        </td>
-        <td>
-            @users._2.name
-        </td>
-        <td>
-            @users._2.email
-        </td>
-    </tr>
+@(users:List[models.User]))
+@main("CK Lunch Roulette -See Who's In t"){
+
+    @container("Lunch Goers") {
+        @for((user) <-  users) {
+        <p>
+                    @user.name
+            <span> - </span>
+                    @user.email
+        </p>
+        }
+
+    }
+<section id="cta" class="wrapper style3">
+    <div class="container">
+        <header>
+            <h2>Are you ready to continue your join the roulette?</h2>
+            <a href="/add" class="button">Add Yourself!</a>
+        </header>
+    </div>
+</section>
+
 }
-</table>
