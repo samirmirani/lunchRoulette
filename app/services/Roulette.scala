@@ -3,6 +3,7 @@ package services
 import models.User
 
 import scala.util.Random
+import play.cache.Cache
 
 object RouletteService {
 
@@ -30,4 +31,22 @@ object RouletteService {
     val pairUsers = groupOne zip groupTwo
     pairUsers
   }
+
+  def pairingJob(): Unit = {
+    val pairedUsers = RouletteService.doPairing(User.list);
+    System.out.println("Paired users, adding to cache");
+    //Set into cache for 24 hours.
+    Cache.set("app.pairedUsers", pairedUsers, 86400);
+  }
+
+  /**
+   * Gets pairs from cache.
+   *
+   * @return  List[(User, User)]
+   */
+  def getPairs : Unit = {
+    val pairs : List[(User, User)] = Cache.get("app.pairedUsers")
+    return pairs
+  }
+
 }

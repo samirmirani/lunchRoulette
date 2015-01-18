@@ -9,6 +9,11 @@ function LunchRoullette() {
     this.topNav = function() {
         var $nav = $('#nav');
         $nav.find("li").removeClass("current");
+        $nav.find("a").each(function() {
+            if ($(this).attr("href") == window.location.pathname) {
+                $(this).parent().addClass('current');
+            }
+        });
     }
 
     this.handleForm = function() {
