@@ -1,16 +1,24 @@
-@(users: List[models.User])
+@(usersPair:List[(models.User, models.User)])
 <table>
     <tr>
         <th>Name</th>
         <th>Email</th>
+        <th>Name</th>
+        <th>Email</th>
     </tr>
-@for((user) <-  users) {
+@for((users) <-  usersPair) {
     <tr>
         <td>
-            @user.name
+            @users._1.name
         </td>
         <td>
-            @user.email
+            @users._1.email
+        </td>
+        <td>
+            @users._2.name
+        </td>
+        <td>
+            @users._2.email
         </td>
     </tr>
 }

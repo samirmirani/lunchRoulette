@@ -7,13 +7,15 @@ import play.api.data._
 import play.api.data.Forms._
 import anorm._
 import anorm.SqlParser._
+import services.RouletteService
 
 
 object UsersController extends Controller {
 
   def index = Action {
     val users = User.list
-    Ok(views.html.lunchGoers(  users  ))
+    val shuffledUsers = RouletteService.doPairing(users)
+    Ok(views.html.lunchGoers(  shuffledUsers  ))
   }
 
   def addUser = Action { implicit request =>
