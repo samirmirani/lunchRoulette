@@ -2,20 +2,24 @@
 @main("CK Lunch Roulette -See Who's In t"){
 
     @container("Lunch Goers") {
-        <table>
+        <table align="center">
             <tr>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Name</th>
-                <th>Email</th>
+                <th align="center">Name</th>
+                <th align="center">Email</th>
+                <th align="center">Paired With</th>
+                <th align="center">Name</th>
+                <th align="center">Email</th>
             </tr>
         @for((users) <-  usersPair) {
-            <tr>
+            <tr align="center">
                 <td>
                     @users._1.name
                 </td>
                 <td>
                     @users._1.email
+                </td>
+                <td>
+                    <->
                 </td>
                 <td>
                     @users._2.name
@@ -27,4 +31,14 @@
         }
         </table>
     }
+
+<section id="cta" class="wrapper style3">
+    <div class="container">
+        <header>
+            <h2>Are you ready to join the roulette?</h2>
+            <a href="/add" class="button">Add Yourself!</a>
+        </header>
+    </div>
+</section>
+
 }

@@ -1,3 +1,7 @@
+Notes From Authoer:
+This is my first real scala app, let alone using the Play framework. There is a lot work that needs to be done, and polish
+to be added. That said, it is fully functional. Enjoy
+
 # CK lunchRoulette
 CK Lunch Roulette - A scala app that will match up random pairs of people for lunch.
 
@@ -14,3 +18,11 @@ third person.
 Some heavy clean up and better FE would be nice.
 
 Pairs need their own models. Currently they are in the user model.
+
+Pairs should recieve a notification e-mail that they have been paired with someone.
+
+Make Pairs page 100% responsive. Its the only page that isn't.
+
+Make countdown clock.
+
+Add timezone support
