@@ -1,4 +1,4 @@
-Notes From Authoer:
+Notes From Author:
 This is my first real scala app, let alone using the Play framework. There is a lot work that needs to be done, and polish
 to be added. That said, it is fully functional. Enjoy
 
