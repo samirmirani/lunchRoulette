@@ -12,20 +12,7 @@ import services.RouletteService
 
 object UsersController extends Controller {
 
-  def index = Action {
-    val users = User.list
-    Ok(views.html.lunchGoers(  users  ))
-  }
 
-  def seePair = Action {
-    val pairedUsers = User.listPairs
-
-    if (pairedUsers.isEmpty) {
-      Ok(views.html.countdown())
-    } else {
-      Ok(views.html.seePairs(  pairedUsers))
-    }
-  }
 
   def addUser = Action {
     Ok(views.html.addUser())
@@ -33,22 +20,19 @@ object UsersController extends Controller {
 
   def addUserPost = Action { implicit request =>
 
-    //todo csrf check
-
-    val form = Form(
+    val EntryForm = Form(
       mapping(
         "id" -> ignored(NotAssigned: Pk[Int]),
-        "name" -> nonEmptyText,
-        "email" -> email,
-        "isActive" -> ignored(true))(User.apply)(User.unapply))
+        "email" -> email
+      )(User.apply)(User.unapply))
 
-    form.bindFromRequest.fold(
+    EntryForm.bindFromRequest.fold(
       formWithErrors => {
-        Redirect("/add")
+        Redirect("/")
       },
       user => {
         User.save(user)
-        Redirect("/lunch-goers")
+        Redirect("/")
       })
   }
 

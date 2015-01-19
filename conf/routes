@@ -4,9 +4,6 @@
 
 # Home page
 GET     /                           controllers.Application.index
-GET     /lunch-goers                controllers.UsersController.index
-GET     /seePairs                   controllers.UsersController.seePair
-GET     /add                        controllers.UsersController.addUser
 POST    /addUser                    controllers.UsersController.addUserPost
 
 # Map static resources from the /public folder to the /assets URL path

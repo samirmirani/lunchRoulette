@@ -5,7 +5,7 @@ import anorm.SqlParser._
 import play.api.db.DB
 import play.api.Play.current
 
-case class User(id: Pk[Int], name: String, email: String, isActive: Boolean)
+case class User(id: Pk[Int], email: String)
 
 object User {
   /**
@@ -16,12 +16,10 @@ object User {
   def save(user: User) {
     DB.withConnection { implicit connection =>
       SQL("""
-            INSERT INTO users.users(name, email, active)
-            VALUES({name}, {email}, {active})
+            INSERT INTO users.users(email)
+            VALUES({email})
           """).on(
-          'name -> user.name,
-          'email -> user.email,
-          'active -> user.isActive
+          'email -> user.email
         ).executeUpdate
     }
   }
@@ -31,10 +29,8 @@ object User {
    */
   private val userParser: RowParser[User] = {
       get[Pk[Int]]("id") ~
-      get[String]("name") ~
-      get[String]("email") ~
-      get[Boolean]("active") map {
-        case id ~ name ~ email ~ isActive => User(id, name, email, isActive)
+      get[String]("email")  map {
+        case id  ~ email => User(id, email)
       }
   }
 
@@ -76,8 +72,8 @@ object User {
 
   def listPairs() = {
     DB.withConnection { implicit connection =>
-      SQL("SELECT usera.name AS name_a, usera.email AS email_a, usera.id AS id_a , usera.active AS active_a , " +
-        " userb.name AS name_b, userb.email AS email_b, userb.id AS id_b , userb.active AS active_b  " +
+      SQL("SELECT usera.email AS email_a, usera.id AS id_a , " +
+        " userb.email AS email_b, userb.id AS id_b  " +
         "FROM users.pairs pair, users.users  usera , users.users userb " +
         "WHERE pair.userida = usera.id AND pair.useridb = userb.id").as(pairParser *)
     }
@@ -88,14 +84,10 @@ object User {
    */
   private val pairParser: RowParser[(User,User)] = {
       get[Pk[Int]]("id_a") ~
-      get[String]("name_a") ~
       get[String]("email_a") ~
-      get[Boolean]("active_a") ~
       get[Pk[Int]]("id_b") ~
-      get[String]("name_b") ~
-      get[String]("email_b") ~
-      get[Boolean]("active_b") map {
-      case id_a ~ name_a ~ email_a ~ active_a ~ id_b ~ name_b ~ email_b ~ active_b => (User(id_a, name_a, email_a, active_a), User(id_b, name_b, email_b, active_b) )
+      get[String]("email_b") map {
+      case id_a ~ email_a  ~ id_b ~ email_b  => (User(id_a, email_a), User(id_b, email_b) )
     }
   }
 

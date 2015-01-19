@@ -15,3 +15,6 @@ libraryDependencies ++= Seq(
 
 libraryDependencies +=     "postgresql" % "postgresql" % "9.1-901.jdbc4"
 
+libraryDependencies += "org.apache.commons" % "commons-email" % "1.3"
+
+libraryDependencies += "com.typesafe.play.plugins" %% "play-plugins-mailer" % "2.3.1"

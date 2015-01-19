@@ -1,18 +1,9 @@
-@main("CK Lunch Roulette - Add Yourself!"){
-    @container("landing"){
-    <section id="addToRoulette">
+<section id="addToRoulette">
         <div>
             <form id="addUser" method="post" action="/addUser">
                 <fieldset>
-                    <legend>Add to Roulette</legend>
                     <label>
-                        <span>Name:</span>
-                        <input id="formName" type="text" name="name" />
-                    </label>
-                    <br />
-                    <br />
-                    <label>
-                        <span>Email:</span>
+                        <span class="label">Email:<span>
                         <input id="formEmail" type="email" name="email"/>
                     </label>
                     <br />
@@ -22,5 +13,3 @@
             </form>
         </div>
     </section>
-    }
-}
