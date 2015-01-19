@@ -20,13 +20,11 @@ object UsersController extends Controller {
   def seePair = Action {
     val pairedUsers = User.listPairs
 
-
-   Ok(views.html.seePairs(  pairedUsers))
-
-
-
-   //val users = User.list
-   // Ok(views.html.lunchGoers(  users  ))
+    if (pairedUsers.isEmpty) {
+      Ok(views.html.countdown())
+    } else {
+      Ok(views.html.seePairs(  pairedUsers))
+    }
   }
 
   def addUser = Action {

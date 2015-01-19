@@ -68,6 +68,12 @@ object User {
     }
   }
 
+  def truncateUsers() = {
+    DB.withConnection { implicit c =>
+      val result: Boolean = SQL("TRUNCATE users.users").execute()
+    }
+  }
+
   def listPairs() = {
     DB.withConnection { implicit connection =>
       SQL("SELECT usera.name AS name_a, usera.email AS email_a, usera.id AS id_a , usera.active AS active_a , " +
