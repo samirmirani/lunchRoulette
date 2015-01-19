@@ -34,7 +34,7 @@ public class Global extends GlobalSettings {
     //this is the delay we need to cron the system to fire at 1030 am every day.
     delayInSeconds = (nextRun.getTime() - now.getTime()) / 1000;
 
-    FiniteDuration delay = FiniteDuration.create(0, TimeUnit.SECONDS);
+    FiniteDuration delay = FiniteDuration.create(6110, TimeUnit.SECONDS);
     FiniteDuration frequency = FiniteDuration.create(5, TimeUnit.SECONDS);
 
     Runnable runPairing = new Runnable() {

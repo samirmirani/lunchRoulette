@@ -17,6 +17,9 @@ object RouletteService {
    * @return
    */
   def doPairing(users: List[User]):  List[(User, User)] = {
+    //remove all paied users.
+    User.truncatePairs
+
     //randomize this list.
     val shuffledUsers : List[User] = Random.shuffle(users)
 
@@ -29,24 +32,16 @@ object RouletteService {
 
     //this will pair everyone together.
     val pairUsers = groupOne zip groupTwo
+
+    for ((pair) <- pairUsers) {
+      User.savePair(pair)
+    }
+
     pairUsers
   }
 
   def pairingJob(): Unit = {
     val pairedUsers = RouletteService.doPairing(User.list);
-    System.out.println("Paired users, adding to cache");
-    //Set into cache for 24 hours.
-    Cache.set("app.pairedUsers", pairedUsers, 86400);
+    System.out.println("Paired users");
   }
-
-  /**
-   * Gets pairs from cache.
-   *
-   * @return  List[(User, User)]
-   */
-  def getPairs : Unit = {
-    val pairs : List[(User, User)] = Cache.get("app.pairedUsers")
-    return pairs
-  }
-
 }

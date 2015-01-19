@@ -18,10 +18,15 @@ object UsersController extends Controller {
   }
 
   def seePair = Action {
-    val pairedUsers = RouletteService.getPairs;
-    Ok(views.html.seePairs(  pairedUsers  ))
-//   val users = User.list
-//    Ok(views.html.lunchGoers(  users  ))
+    val pairedUsers = User.listPairs
+
+
+   Ok(views.html.seePairs(  pairedUsers))
+
+
+
+   //val users = User.list
+   // Ok(views.html.lunchGoers(  users  ))
   }
 
   def addUser = Action {
