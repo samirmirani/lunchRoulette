@@ -6,11 +6,12 @@ import scala.util.Random
 import play.cache.Cache
 import services.MailService
 import org.apache.commons.mail._
-import play.api.libs.mailer._
+import com.typesafe.plugin._
+import play.api.Play.current
 
 object MailService {
 
-  val from: String = "example@example.com"
+  val from: String = "cklunchroullete@gmail.com"
   val hostname: String = "smtp.gmail.com"
 
   /**
@@ -22,13 +23,11 @@ object MailService {
    * @return
    */
   def sendMail(recpient: String , subject: String,  message: String): Boolean = {
-    val email = new SimpleEmail();
-    email.setHostName(hostname)
-    email.setFrom(from)
-    email.addTo(recpient)
-    email.setSubject("subject")
-    email.setMsg(message)
-    Mail.send(email)
+    val mail = use[MailerPlugin].email
+    mail.setFrom(from)
+    mail.setRecipient(recpient)
+    mail.setSubject(subject)
+    mail.send(message)
 
     true
   }
@@ -45,37 +44,62 @@ object RouletteService {
    * @param users
    * @return
    */
-  def doPairing(users: List[User]):  List[(User, User)] = {
-    //remove all paied users.
-    User.truncatePairs
+  def doPairing(usersToPair: List[User]):  List[(User, User)] = {
 
-    //randomize this list.
-    val shuffledUsers : List[User] = Random.shuffle(users)
+    System.out.println("Number of users to pair")
+    System.out.println(usersToPair.size)
+    
+    //damn we are boned, there is an odd number of users.
+    val isOdd : Boolean = usersToPair.size % 2 == 1
+    //make a backup of the users to pair.
+    val oddUsersToAppend : List[(User, User)] = List((usersToPair(0), usersToPair(1)))
+    
+    //remove one from the list if its odd. If not, don't do anything. We will append this odd one out to the list later.
+    if(isOdd) {
+      //make the list even...it'll be must easier this way.
+      usersToPair.drop(1)
+    }
 
-
-    val halfOfListCount = shuffledUsers.size / 2;
-
-    val groupOne = shuffledUsers.slice(0, halfOfListCount)
-    val groupTwo = shuffledUsers.slice(halfOfListCount, shuffledUsers.size)
+    
+    //randomize this list, cut in into two groups.
+    val shuffledUsers : List[User] = Random.shuffle(usersToPair)
+    val halfOfListCount : Int  = shuffledUsers.size / 2
+    val groupOne  : List[User] = shuffledUsers.slice(0, halfOfListCount)
+    val groupTwo : List[User] = shuffledUsers.slice(halfOfListCount, shuffledUsers.size)
 
 
     //this will pair everyone together.
-    val pairUsers = groupOne zip groupTwo
+    val pairUsers : List[(User,User)] = groupOne zip groupTwo
+    
+    //sneak the odd one in.
+    val pairs : List[(User , User)] = if (isOdd && groupOne.size > 0) {
+      pairUsers ++ oddUsersToAppend
+    } else {
+      pairUsers
+    }
 
-    for ((pair) <- pairUsers) {
+
+    
+    //remove all previously paired users.
+    User.truncatePairs
+    
+    for ((pair) <- pairs) {
+      //Save Pairs tot he DB
       User.savePair(pair)
     }
 
     System.out.println("Paired users");
     
-    pairUsers
+    //return.
+    pairs
   }
 
   def pairingJob(): Unit = {
-    val pairedUsers = RouletteService.doPairing(User.list);
-    
-
-    sendMailToPairs(pairedUsers)
+    val users = User.list;
+    if (users.size > 1 ) {
+      val pairedUsers = RouletteService.doPairing(users)
+      sendMailToPairs(pairedUsers)
+    }
   }
 
   /**

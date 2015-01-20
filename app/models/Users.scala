@@ -4,6 +4,12 @@ import anorm._
 import anorm.SqlParser._
 import play.api.db.DB
 import play.api.Play.current
+import services._
+import play.libs.Akka
+
+import akka.actor._
+import scala.concurrent.duration._
+import play.api.libs.concurrent.Execution.Implicits._
 
 case class User(id: Pk[Int], email: String)
 
@@ -22,6 +28,14 @@ object User {
           'email -> user.email
         ).executeUpdate
     }
+    
+
+    Akka.system.scheduler.scheduleOnce(0 seconds,  new Runnable {
+      def run() {
+        MailService.sendMail(user.email, "You have entered the roulette", "You will be recieveing your lunch partner @ 10:30 am PST")
+      }
+    })
+
   }
 
   /**

@@ -8,7 +8,7 @@ object Application extends Controller {
 
   def index = Action {
     RouletteService.pairingJob
-    Ok(views.html.index())
+    Ok(views.html.index(""))
   }
 
 }

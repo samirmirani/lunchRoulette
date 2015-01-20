@@ -1,3 +1,4 @@
+@(message: String)
 <section id="addToRoulette">
         <div>
             <form id="addUser" method="post" action="/addUser">
@@ -7,6 +8,7 @@
                         <input id="formEmail" type="email" name="email"/>
                     </label>
                     <br />
+                    <span class="label">@message</span>
                     <br />
                     <input type="submit" />
                 </fieldset>
