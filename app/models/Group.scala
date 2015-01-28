@@ -20,6 +20,7 @@ class Groups(users: List[User]) {
 
 
   def groupSize : Int = 3
+  def maxGroupSize: Int = groupSize + (groupSize - 1)
   /**
    * This will define the members of these groups.
    *
@@ -33,11 +34,11 @@ class Groups(users: List[User]) {
     System.out.println(userCount)
     do {
 
-      var members = if (_users.size <=  groupSize + (groupSize - 1)) {
+      var members = if (_users.size <=  maxGroupSize) {
         //if there is a remainder in the group size just return the list. This way groups will maintain a min of at least the grpsize
         val members = _users.toList
-        _users = _users.drop(groupSize + groupSize - 1)
-        userCount = userCount - groupSize -  (groupSize + 1)
+        _users = _users.drop(maxGroupSize)
+        userCount = userCount - maxGroupSize
         members
       } else {
         //cut the list by the group size
