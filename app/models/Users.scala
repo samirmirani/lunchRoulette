@@ -32,7 +32,7 @@ object User {
 
     Akka.system.scheduler.scheduleOnce(0 seconds,  new Runnable {
       def run() {
-        MailService.sendMail(user.email, "You have entered the roulette", "You will be recieveing your lunch partner @ 10:30 am PST")
+       // MailService.sendMail(user.email, "You have entered the roulette", "You will be recieveing your lunch partner @ 10:30 am PST")
       }
     })
 
@@ -79,9 +79,9 @@ object User {
   }
 
   def truncateUsers() = {
-    DB.withConnection { implicit c =>
-      val result: Boolean = SQL("TRUNCATE users.users").execute()
-    }
+ //   DB.withConnection { implicit c =>
+ //     val result: Boolean = SQL("TRUNCATE users.users").execute()
+  //  }
   }
 
   def listPairs() = {

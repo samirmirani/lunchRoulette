@@ -1,7 +1,6 @@
 package services
 
-import models.User
-
+import models._
 import scala.util.Random
 import play.cache.Cache
 import services.MailService
@@ -95,11 +94,12 @@ object RouletteService {
   }
 
   def pairingJob(): Unit = {
-    val users = User.list;
-    if (users.size > 1 ) {
-      val pairedUsers = RouletteService.doPairing(users)
-      sendMailToPairs(pairedUsers)
-    }
+     val users = User.list;
+     val groups = new Groups(users)
+//    if (users.size > 1 ) {
+//      val pairedUsers = RouletteService.doPairing(users)
+//      sendMailToPairs(pairedUsers)
+//    }
   }
 
   /**

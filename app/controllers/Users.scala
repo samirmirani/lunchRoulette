@@ -26,7 +26,7 @@ object UsersController extends Controller {
     val EntryForm = Form(
       mapping(
         "id" -> ignored(NotAssigned: Pk[Int]),
-        "email" -> nonEmptyText.verifying("Email must be in correct format" , emailPost => emailPost.matches("[a-zA-Z0-9\\.]*@creditkarma.com") )
+        "email" -> nonEmptyText.verifying("Email must be in correct format" , emailPost => emailPost.matches("[a-zA-Z0-9\\.]*@example.com") )
       )(User.apply)(User.unapply))
 
     EntryForm.bindFromRequest.fold(
