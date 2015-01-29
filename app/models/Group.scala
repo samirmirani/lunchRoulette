@@ -3,13 +3,30 @@ package models
 import scala.collection.mutable.ListBuffer
 import util.Random._
 import models.User
+import services.MailService
 
 
 class Group(members: List[User]) {
 
-  private var _members = members
+  var _members = members
 
+  /**
+   * Sends out an email to user informing them of their pairing.
+   * @param userToSend
+   */
+  private def sendNotificationMailToUser(userToSend: User)  : Unit = {
+    val otherMembers = _members.filterNot(x => userToSend == x )
 
+    val subject = "Your lunch roulette group has formed"
+    val message = "You have been grouped with the following people: \n" + otherMembers.foldLeft("") ((message : String , userB : User) => message + "\n" + userB.email)
+
+    System.out.println(message)
+   // MailService.sendMail(userToSend.email, subject, message)
+  }
+
+  def notifyMembers() : Unit = {
+    _members.map(user => sendNotificationMailToUser(user))
+  }
 
 }
 

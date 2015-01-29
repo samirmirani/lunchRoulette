@@ -84,7 +84,6 @@ public class Global extends GlobalSettings {
     Runnable runPairing = new Runnable() {
       @Override
       public void run() {
-        User.truncatePairs();
         User.truncateUsers();
         System.out.println("Truncatation Complete....App reset for new day.");
       }

@@ -59,24 +59,7 @@ object User {
       }
     }
 
-  def savePair(pair: (User,User)) = {
-    System.out.println(pair)
-    DB.withConnection { implicit connection =>
-      SQL("""
-            INSERT INTO users.pairs(userida, useridb)
-            VALUES({idA}, {idB})
-          """).on(
-          'idA -> pair._1.id.get,
-          'idB -> pair._2.id.get
-        ).executeUpdate
-    }
-  }
 
-  def truncatePairs() = {
-    DB.withConnection { implicit c =>
-      val result: Boolean = SQL("TRUNCATE users.pairs").execute()
-    }
-  }
 
   def truncateUsers() = {
  //   DB.withConnection { implicit c =>
@@ -84,25 +67,6 @@ object User {
   //  }
   }
 
-  def listPairs() = {
-    DB.withConnection { implicit connection =>
-      SQL("SELECT usera.email AS email_a, usera.id AS id_a , " +
-        " userb.email AS email_b, userb.id AS id_b  " +
-        "FROM users.pairs pair, users.users  usera , users.users userb " +
-        "WHERE pair.userida = usera.id AND pair.useridb = userb.id").as(pairParser *)
-    }
-  }
 
-  /**
-   * This will go through each row of a result and turn the result of a row into the user object.
-   */
-  private val pairParser: RowParser[(User,User)] = {
-      get[Pk[Int]]("id_a") ~
-      get[String]("email_a") ~
-      get[Pk[Int]]("id_b") ~
-      get[String]("email_b") map {
-      case id_a ~ email_a  ~ id_b ~ email_b  => (User(id_a, email_a), User(id_b, email_b) )
-    }
-  }
 
 }
