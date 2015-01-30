@@ -17,7 +17,6 @@ function LunchRoullette() {
     }
 
     this.handleForm = function() {
-    return;
     //this is not needed anymore
         $("#addUser").submit(function(e) {
             e.preventDefault();
@@ -27,13 +26,16 @@ function LunchRoullette() {
 
             $.ajax({
                 type: "POST",
-                url: '/addUser',
+                url: '/addUserPost',
                 data: {
-                    name: name,
                     email: email
                 },
-                success: function() {
-                    getUsers();
+                succsess: function(response) {
+                    console.log(response);
+                    $('.flashmessage').html(response);
+                },
+                error: function(response) {
+                    $('.flashmessage').html(response);
                 },
                 dataType: 'json'
             })

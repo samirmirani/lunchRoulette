@@ -51,6 +51,8 @@ class Groups(users: List[User]) {
     System.out.println(userCount)
     do {
 
+      //todo: I have to make this better. This gets all left overs that won't fit the group size, and puts it into the last group.
+      //it should randomly/evenly distribute the MOD throughout the process. This should make an even group sizes within the collection.
       var members = if (_users.size <=  maxGroupSize) {
         //if there is a remainder in the group size just return the list. This way groups will maintain a min of at least the grpsize
         val members = _users.toList

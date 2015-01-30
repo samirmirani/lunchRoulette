@@ -14,13 +14,7 @@ import play.api.data.Forms._
 
 object UsersController extends Controller {
 
-
-
-  def addUser = Action {
-    Ok(views.html.addUser(""))
-  }
-
-  def addUserPost = Action { implicit request =>
+    def addUserPost = Action { implicit request =>
 
      
     val EntryForm = Form(
@@ -31,11 +25,11 @@ object UsersController extends Controller {
 
     EntryForm.bindFromRequest.fold(
       formWithErrors => {
-        Ok(views.html.index("Opps...this is embarssing...something went wrong"))
+        Ok("{message: \"Opps...this is embarssing...something went wrong\"}").as("application/json")
       },
       user => {
         User.save(user)
-        Ok(views.html.index("Thanks for entering the roulette, you'll be getting a confirmation e-mail shortly!"))
+        Ok("{message: \"Thanks for entering the roulette, you'll be getting a confirmation e-mail shortly\"}").as("application/json")
       })
   }
 

@@ -1,16 +1,21 @@
 @(message: String)
 <section id="addToRoulette">
+    <header>
+        <h2 class="flashmessage"></h2>
+    </header>
         <div>
-            <form id="addUser" method="post" action="/addUser">
+            <form id="addUser" method="post" action="">
                 <fieldset>
                     <label>
-                        <span class="label">Email:<span>
+                        <span class="label">Email:</span>
                         <input id="formEmail" type="email" name="email"/>
                     </label>
                     <br />
-                    <span class="label">@message</span>
+
                     <br />
-                    <input type="submit" />
+                    <footer>
+                        <button class="button style2 scrolly" type="submit"> Enter Roulette </button>
+                    </footer>
                 </fieldset>
             </form>
         </div>
