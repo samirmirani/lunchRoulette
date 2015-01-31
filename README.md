@@ -42,3 +42,6 @@ application.name ="SomeString"
 Make countdown clock.
 
 Add timezone support
+
+# Shoutouts:
+http://html5up.net/ - For the awesome template overflow.
