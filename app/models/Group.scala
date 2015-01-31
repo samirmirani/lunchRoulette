@@ -1,11 +1,13 @@
 package models
 
-import scala.collection.mutable.ListBuffer
-import util.Random._
-import models.User
 import services.MailService
 
-
+/**
+ * This a the single entity class for a group of users.
+ *
+ *
+ * @param members - List of User - The grouped users
+ */
 class Group(members: List[User]) {
 
   var _members = members
@@ -18,26 +20,42 @@ class Group(members: List[User]) {
     val otherMembers = _members.filterNot(x => userToSend == x )
 
     val subject = "Your lunch roulette group has formed"
-    val message = "You have been grouped with the following people: \n" + otherMembers.foldLeft("") ((message : String , userB : User) => message + "\n" + userB.email)
+    //Message to send to user. Get the other members of the groups email and join a new line seperated list of them
+    val message : String = "You have been grouped with the following people: \n" + otherMembers.foldLeft("") (
+      //This makes the list of emails seen in the grouping email. Scala...is awesome.
+      (message : String , userB : User) => message + "\n" + userB.email
+    )
 
-    System.out.println(message)
-   // MailService.sendMail(userToSend.email, subject, message)
+    MailService.sendMail(userToSend.email, subject, message)
   }
 
+  /**
+   * This will notify all members in the group via email of whom they are grouped with.....handle with care.
+   */
   def notifyMembers() : Unit = {
     _members.map(user => sendNotificationMailToUser(user))
   }
 
 }
 
+/**
+ * This represents many Group objects see above. Each group stores many users.
+ *
+ *
+ * To Init this class pass in a list of Users you would like to organize into groups.
+ *
+ * @param users
+ */
 class Groups(users: List[User]) {
 
   private var _users = users.toBuffer;
   private var _groups : List[Group] = Nil
 
+  //todo shuffer users.
 
   def groupSize : Int = 3
   def maxGroupSize: Int = groupSize + (groupSize - 1)
+
   /**
    * This will define the members of these groups.
    *
@@ -79,6 +97,9 @@ class Groups(users: List[User]) {
     _groups
   }
 
+  /**
+   * This is ALL the groups in this group object. It is a List so....do with it what you want. Parallelize, etc...
+   */
   lazy val groups : List[Group] = {
     fillGroups()
   }

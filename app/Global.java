@@ -2,7 +2,7 @@ import play.Application;
 import play.GlobalSettings;
 import play.libs.Akka;
 import scala.concurrent.duration.FiniteDuration;
-import java.lang.reflect.Method;
+
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 import services.RouletteService;
@@ -22,8 +22,8 @@ public class Global extends GlobalSettings {
     //Reset tables at midnight.
     //todo abstract this out.
     Calendar c = Calendar.getInstance();
-    c.set(Calendar.HOUR_OF_DAY, 17);
-    c.set(Calendar.MINUTE, 5);
+    c.set(Calendar.HOUR_OF_DAY, 10);
+    c.set(Calendar.MINUTE, 30);
     c.set(Calendar.SECOND, 0);
     Date plannedStart = c.getTime();
     Date now = new Date();
@@ -46,8 +46,8 @@ public class Global extends GlobalSettings {
     Runnable runPairing = new Runnable() {
       @Override
       public void run() {
-        RouletteService.pairingJob();
-        System.out.println("Pairning complete");
+        RouletteService.doGrouping();
+        System.out.println("Grouping complete");
       }
     };
 
