@@ -38,33 +38,6 @@ SET default_with_oids = false;
 
 
 
-CREATE TABLE pairs (
-    id integer NOT NULL,
-    userida integer NOT NULL,
-    useridb integer NOT NULL
-);
-
-
-ALTER TABLE users.pairs OWNER TO app;
-
-
-COMMENT ON TABLE pairs IS 'pairs of users.';
-
-
-CREATE SEQUENCE pairs_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE users.pairs_id_seq OWNER TO app;
-
-
-ALTER SEQUENCE pairs_id_seq OWNED BY pairs.id;
-
-
 
 CREATE TABLE users (
     id integer NOT NULL,
@@ -92,15 +65,9 @@ ALTER TABLE users.users_id_seq OWNER TO app;
 ALTER SEQUENCE users_id_seq OWNED BY users.id;
 
 
-ALTER TABLE ONLY pairs ALTER COLUMN id SET DEFAULT nextval('pairs_id_seq'::regclass);
 
 
 ALTER TABLE ONLY users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regclass);
-
-
-ALTER TABLE ONLY pairs
-    ADD CONSTRAINT pairs_pkey PRIMARY KEY (id);
-
 
 
 ALTER TABLE ONLY users
