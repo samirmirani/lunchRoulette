@@ -3,7 +3,7 @@ This is my first real scala app, let alone using the Play framework. There is a 
 to be added. That said, it is fully functional. Enjoy
 
 # CK lunchRoulette
-CK Lunch Roulette - A scala app that will match up random pairs of people for lunch.
+CK Lunch Roulette - A scala app that will match up random groups of people for lunch.
 
 # To Install
 Make sure PostgreSQL has database lunch with appriopriate user marked in config. (You may change user if you want)
