@@ -1,39 +1,35 @@
 $( document ).ready(function() {
     var lr = new LunchRoullette();
     lr.handleForm();
-    lr.topNav();
-
 });
 
 function LunchRoullette() {
-    this.topNav = function() {
-        var $nav = $('#nav');
-        $nav.find("li").removeClass("current");
-        $nav.find("a").each(function() {
-            if ($(this).attr("href") == window.location.pathname) {
-                $(this).parent().addClass('current');
-            }
-        });
-    }
-
     this.handleForm = function() {
-    return;
-    //this is not needed anymore
+        var disable = false;
         $("#addUser").submit(function(e) {
             e.preventDefault();
+            $('.flashmessage').hide();
+            if(disable) {
+                return false;
+            }
 
-            var name = $("#formName").val();
             var email = $("#formEmail").val();
-
             $.ajax({
                 type: "POST",
-                url: '/addUser',
+                url: '/addUserPost',
                 data: {
-                    name: name,
                     email: email
                 },
-                success: function() {
-                    getUsers();
+                success: function(response) {
+                    console.log(response);
+                    $('#addUser').hide();
+                    $('.flashmessage').fadeOut(40).html(response).fadeIn(450);
+
+                    //user has completed form, disable it now.
+                    disable = true;
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    $('.flashmessage').html(jqXHR.responseText).fadeIn(450);
                 },
                 dataType: 'json'
             })

@@ -6,11 +6,28 @@ import services.MailService
 import org.apache.commons.mail._
 import com.typesafe.plugin._
 import play.api.Play.current
+import play.api.Play
 
+
+/**
+ * This is how the application will fire off grouping all users into random groups.
+ */
+object RouletteService {
+  def doGrouping(): Unit = {
+    //Get all the users from the DB.
+    val users : List[User] = User.list
+    if (users.size > 1 ) {
+      val groups  : Groups = new Groups(users)
+      //Notify each user of who they are grouped with. Do this in parallel (this could be a decent amount of emails)
+      groups.groups.par.map(_.notifyMembers())
+    }
+  }
+}
+
+/**
+ * Wrapper for sending mail
+ */
 object MailService {
-
-  val from: String = "cklunchroullete@gmail.com"
-  val hostname: String = "smtp.gmail.com"
 
   /**
    * Sends an e-mail out
@@ -22,34 +39,32 @@ object MailService {
    */
   def sendMail(recpient: String , subject: String,  message: String): Boolean = {
     val mail = use[MailerPlugin].email
-    mail.setFrom(from)
+    mail.setFrom(
+      Play.current.configuration.getString("smtp.user") match {
+      case Some(value) => value
+      case None => throw new Exception("smtp.user not set")
+    })
     mail.setRecipient(recpient)
     mail.setSubject(subject)
-    mail.send(message)
 
+    //if the mail service is enabled. Send message out.
+    if (enabled()) {
+      mail.send(message)
+    }
     true
   }
-}
 
-object RouletteService {
-
-
-
-
-  def pairingJob(): Unit = {
-     val users = User.list
-
-
-    if (users.size > 1 ) {
-      val groups  : Groups = new Groups(users)
-
-      //Run the send mail on all groups. Each group is parallelized as much as possible.
-      groups.groups.par.map(_.notifyMembers())
-
-
-//      val pairedUsers = RouletteService.doPairing(users)
-//      sendMailToPairs(pairedUsers)
+  /**
+   * Checks to make sure that the mail service is enabled.
+   * @return
+   */
+  def enabled() : Boolean = {
+    val enabledConfig : String = Play.current.configuration.getString("smtp.enabled") match {
+      case Some(value) => value
+      case None => throw new Exception("mailservice.enabled not set")
     }
-  }
 
+    enabledConfig.toBoolean
+  }
 }
+

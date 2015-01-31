@@ -7,7 +7,8 @@ import services._
 object Application extends Controller {
 
   def index = Action {
-    RouletteService.pairingJob
+    //this is a debug tool to test grouping
+    //RouletteService.doGrouping
     Ok(views.html.index(""))
   }
 

@@ -10,19 +10,14 @@ import anorm.SqlParser._
 import services.RouletteService
 import play.api.data._
 import play.api.data.Forms._
+import play.api.libs.json._
 
 
 object UsersController extends Controller {
 
+    def addUserPost = Action { implicit request =>
 
 
-  def addUser = Action {
-    Ok(views.html.addUser(""))
-  }
-
-  def addUserPost = Action { implicit request =>
-
-     
     val EntryForm = Form(
       mapping(
         "id" -> ignored(NotAssigned: Pk[Int]),
@@ -31,11 +26,11 @@ object UsersController extends Controller {
 
     EntryForm.bindFromRequest.fold(
       formWithErrors => {
-        Ok(views.html.index("Opps...this is embarssing...something went wrong"))
+        BadRequest(  Json.toJson("Opps...this is embarssing...something went wrong")).as("application/json")
       },
       user => {
         User.save(user)
-        Ok(views.html.index("Thanks for entering the roulette, you'll be getting a confirmation e-mail shortly!"))
+        Ok( Json.toJson("Thanks for entering the roulette, you'll be getting a confirmation e-mail shortly")).as("application/json")
       })
   }
 
