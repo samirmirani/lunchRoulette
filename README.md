@@ -11,17 +11,29 @@ Run like any other Scala Play app. Evolution will spin up SCHEMA's and tables.
 Get Standard Play Framework config file and add:
 
 db.default.driver=org.postgresql.Driver
+
 db.default.url="jdbc:postgresql://localhost/lunch"
+
 db.default.user="SomeString"
+
 db.default.password="SomeString"
+
 mailservice.enabled=false
+
 smtp.debug=false
+
 smtp.host=
+
 smtp.port=587
+
 smtp.isSsl=yes
+
 smtp.tls=yes
+
 smtp.password=
+
 smtp.user=
+
 application.name ="SomeString"
 
 
