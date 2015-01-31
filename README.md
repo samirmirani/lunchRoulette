@@ -8,20 +8,24 @@ CK Lunch Roulette - A scala app that will match up random pairs of people for lu
 # To Install
 Make sure PostgreSQL has database lunch with appriopriate user marked in config. (You may change user if you want)
 Run like any other Scala Play app. Evolution will spin up SCHEMA's and tables.
-Thats it!
+Get Standard Play Framework config file and add:
+
+db.default.driver=org.postgresql.Driver
+db.default.url="jdbc:postgresql://localhost/lunch"
+db.default.user="SomeString"
+db.default.password="SomeString"
+mailservice.enabled=false
+smtp.debug=false
+smtp.host=
+smtp.port=587
+smtp.isSsl=yes
+smtp.tls=yes
+smtp.password=
+smtp.user=
+application.name ="SomeString"
 
 
 # TODO
-Current app doesn't support an odd number of users in the lunch Roulette. Haven't decieded what to do with the
-third person.
-
-Some heavy clean up and better FE would be nice.
-
-Pairs need their own models. Currently they are in the user model.
-
-Pairs should recieve a notification e-mail that they have been paired with someone.
-
-Make Pairs page 100% responsive. Its the only page that isn't.
 
 Make countdown clock.
 
